@@ -81,6 +81,15 @@ input:focus,select:focus{border-color:var(--accent)}
 .codeword{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#bfefff}
 .funnel{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.funnel span{padding:9px 12px;border:1px solid var(--line);border-radius:11px;background:#0b1722}.arrow{color:#5c7286}
 textarea{width:100%;min-height:120px;background:#0c1722;color:#eaf4fb;border:1px solid var(--line);border-radius:12px;padding:12px}
+
+.creator-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.creator-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#0b1722}
+.creator-card img{width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line)}
+.creator-body{padding:15px}.creator-body ul{padding-left:18px;line-height:1.55;color:#c5d3de}
+.watchrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.step-row{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #203143}
+.stepnum{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#163246;color:var(--accent);font-weight:900}
+
 </style>
 </head>
 <body>
@@ -110,6 +119,7 @@ textarea{width:100%;min-height:120px;background:#0c1722;color:#eaf4fb;border:1px
     <button data-tab="gameplan">90-Day Game Plan</button>
     <button data-tab="products">Products & Pricing</button>
     <button data-tab="calculator">Profit Calculator</button>
+    <button data-tab="youtube">YouTube Playbook</button>
     <button data-tab="sources">Sources</button>
   </nav>
 
@@ -365,6 +375,243 @@ textarea{width:100%;min-height:120px;background:#0c1722;color:#eaf4fb;border:1px
           <div class="progress"><i id="marginbar" style="width:0"></i></div>
           <p id="marginAdvice"></p>
           <div class="callout warn">Marketplace fee structures can change. Verify current Etsy fees before using this calculator for accounting.</div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="youtube" class="section">
+      <div class="grid">
+        <div class="card span12">
+          <div class="kicker">YOUTUBE PLAYBOOK</div>
+          <h2 style="margin-top:4px">POD creators worth learning from</h2>
+          <p>I reviewed representative tutorials, recent guides, video descriptions and available transcripts. Each creator is included for a different strength. Revenue claims are creator-reported unless independently verified, and many POD creators use affiliate links or sell courses.</p>
+          <div class="callout"><b>Use this section as a curriculum, not entertainment.</b> Watch one guide, do the work in your shop, then come back only when you have the next specific problem.</div>
+        </div>
+
+        <div class="card span12">
+          <h2>Recommended watch order</h2>
+          <div class="step-row"><div class="stepnum">1</div><div><b>Heather Studio — setup</b><br><small>Etsy account, policies, branding, pricing, Printify integration and first listing.</small></div></div>
+          <div class="step-row"><div class="stepnum">2</div><div><b>Cassiy Johnson — launch simply</b><br><small>Choose one product, set listing goals, research demand, add value and publish.</small></div></div>
+          <div class="step-row"><div class="stepnum">3</div><div><b>Simply Shawna — niche + conversion</b><br><small>Trend bending, mapping, timely niches and why conversion matters more than SEO alone.</small></div></div>
+          <div class="step-row"><div class="stepnum">4</div><div><b>Detour Shirts — design + trends</b><br><small>Improve the actual shirt and break broad interests into sub-niches.</small></div></div>
+          <div class="step-row"><div class="stepnum">5</div><div><b>Ryan Hogue — weekly research</b><br><small>Use Amazon Merch bestseller/BSR signals to build a repeatable research habit.</small></div></div>
+          <div class="step-row"><div class="stepnum">6</div><div><b>Wholesale Ted + Shimmy Morris — business layer</b><br><small>Store ownership, fulfillment, traffic, branding, evergreen vs trends and marketplace tradeoffs.</small></div></div>
+        </div>
+
+        <div class="card span12">
+          <h2>Creator guides</h2>
+          <div class="creator-grid">
+
+            <article class="creator-card">
+              <img loading="lazy" src="https://i.ytimg.com/vi/QhX1pgsfFlc/hqdefault.jpg" alt="Cassiy Johnson">
+              <div class="creator-body">
+                <h3>Cassiy Johnson</h3>
+                <span class="badge green">Etsy POD</span><span class="badge blue">Scaling</span>
+                <p><b>Guide:</b> “7 Strategies I'd Use To Grow Fast On Etsy If I Started Over Today.”</p>
+                <ul>
+                  <li>Choose <b>one product</b> first.</li>
+                  <li>Set listing-output goals.</li>
+                  <li>Research before designing.</li>
+                  <li><b>Sell what is selling now</b>, then add value.</li>
+                  <li>Bias toward action instead of endless perfection.</li>
+                  <li>Go broad enough to find demand, then niche down.</li>
+                </ul>
+                <div class="watchrow">
+                  <a class="btn small" target="_blank" href="https://www.youtube.com/watch?v=QhX1pgsfFlc">Watch guide ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/@CassiyJohnson">Channel ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.cassiyjohnson.com/etsypodlaunchguide">Free launch course ↗</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="creator-card">
+              <img loading="lazy" src="https://i.ytimg.com/vi/PvWZqtNX_mk/hqdefault.jpg" alt="Simply Shawna">
+              <div class="creator-body">
+                <h3>Simply Shawna</h3>
+                <span class="badge green">Etsy</span><span class="badge blue">SEO</span><span class="badge purple">Trend bending</span>
+                <p><b>Guide:</b> “The Only Etsy SEO Strategy You Need to Get Found in 2026.”</p>
+                <ul>
+                  <li>SEO makes a listing eligible; <b>design + conversion</b> determine whether shoppers respond.</li>
+                  <li>Look for under-served angles, not only huge keywords.</li>
+                  <li>Use “trend bending”: take a proven visual/theme and map it to a different buyer group.</li>
+                  <li>Use all relevant listing fields/tags without letting SEO replace product research.</li>
+                  <li>Batch related designs after the niche is validated.</li>
+                </ul>
+                <div class="watchrow">
+                  <a class="btn small" target="_blank" href="https://www.youtube.com/watch?v=PvWZqtNX_mk">Watch 2026 guide ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/@shawnalynn2083">Channel ↗</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="creator-card">
+              <img loading="lazy" src="https://i.ytimg.com/vi/sIKQ5Rd_Iiw/hqdefault.jpg" alt="Heather Studio">
+              <div class="creator-body">
+                <h3>Heather Studio</h3>
+                <span class="badge green">Beginner setup</span><span class="badge yellow">Printify</span>
+                <p><b>Guide:</b> full Etsy + Printify beginner tutorial.</p>
+                <ul>
+                  <li>Set up Etsy, banking and verification correctly.</li>
+                  <li>Finish policies, storefront branding and settings.</li>
+                  <li>Price intentionally and configure promotions.</li>
+                  <li>Integrate Printify after you understand the listing workflow.</li>
+                  <li>Her SEO guide focuses on keywords, titles, tags and descriptions for organic traffic.</li>
+                </ul>
+                <div class="watchrow">
+                  <a class="btn small" target="_blank" href="https://www.youtube.com/watch?v=sIKQ5Rd_Iiw">Full setup ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/watch?v=zqvnfXg6loo">SEO guide ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/@heatherstudio">Channel ↗</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="creator-card">
+              <img loading="lazy" src="https://i.ytimg.com/vi/7zg2RM8GVQc/hqdefault.jpg" alt="Detour Shirts">
+              <div class="creator-body">
+                <h3>Detour Shirts (Juna Duncan)</h3>
+                <span class="badge green">T-shirt design</span><span class="badge blue">Trends</span>
+                <p><b>Guides:</b> trend discovery, sub-niches and seasonal/Q4 topics.</p>
+                <ul>
+                  <li>Research trends <b>before</b> designing.</li>
+                  <li>Break broad markets into better-targeted sub-niches.</li>
+                  <li>Typography, spacing, hierarchy and presentation still matter.</li>
+                  <li>Use AI/design tools as production help, not as your market judgment.</li>
+                  <li>Cross-marketplace experience is useful for seeing what survives beyond one platform.</li>
+                </ul>
+                <div class="watchrow">
+                  <a class="btn small" target="_blank" href="https://www.youtube.com/watch?v=7zg2RM8GVQc">Find trends ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/watch?v=KHIYhViwmD0">Q4 niches ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/@DetourShirts">Channel ↗</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="creator-card">
+              <img loading="lazy" src="https://i.ytimg.com/vi/bk-p1ZURaSE/hqdefault.jpg" alt="Wholesale Ted">
+              <div class="creator-body">
+                <h3>Wholesale Ted (Sarah Chrisp)</h3>
+                <span class="badge green">Full workflow</span><span class="badge blue">Shopify</span>
+                <p><b>Guide:</b> Shopify + Printify complete setup.</p>
+                <ul>
+                  <li>Think through the entire funnel: <b>product → mockup → store → fulfillment → traffic</b>.</li>
+                  <li>Use lifestyle mockups and coherent product collections.</li>
+                  <li>Do not skip legal pages, payments, shipping, privacy or domain setup.</li>
+                  <li>Her quick-start sequence separately covers profitable designs, Canva, Etsy setup and free Etsy traffic.</li>
+                  <li>Own-store control is higher, but so is your responsibility for traffic.</li>
+                </ul>
+                <div class="watchrow">
+                  <a class="btn small" target="_blank" href="https://www.youtube.com/watch?v=bk-p1ZURaSE">Shopify guide ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/watch?v=M9ZOiqxuMsg">Etsy design example ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/@WholesaleTed">Channel ↗</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="creator-card">
+              <img loading="lazy" src="https://i.ytimg.com/vi/7R1kF3oPQLY/hqdefault.jpg" alt="Shimmy Morris">
+              <div class="creator-body">
+                <h3>Shimmy Morris</h3>
+                <span class="badge green">Business framework</span><span class="badge red">Trademark awareness</span>
+                <p><b>Guide:</b> “How to Build a Successful Print on Demand Business.”</p>
+                <ul>
+                  <li>Framework: <b>niche → design → printing partner → brand → marketing</b>.</li>
+                  <li>Define an ideal customer instead of designing for everyone.</li>
+                  <li>Combine niches (“double niche”) to get more specific.</li>
+                  <li>Balance evergreen and trend opportunities.</li>
+                  <li>Build trademark checks into the workflow.</li>
+                </ul>
+                <div class="watchrow">
+                  <a class="btn small" target="_blank" href="https://www.youtube.com/watch?v=7R1kF3oPQLY">Business framework ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/watch?v=g3QaKj7VjHY">Niche reality check ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/@ShimmyMorris">Channel ↗</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="creator-card">
+              <img loading="lazy" src="https://i.ytimg.com/vi/YCG7Wwmq_jk/hqdefault.jpg" alt="Ryan Hogue">
+              <div class="creator-body">
+                <h3>Ryan Hogue</h3>
+                <span class="badge green">Weekly niches</span><span class="badge blue">Amazon BSR</span>
+                <p><b>Series:</b> recurring “Top 5 Niches” research.</p>
+                <ul>
+                  <li>Inspect organic Amazon Merch bestsellers and <b>BSR</b>.</li>
+                  <li>Use niche tools as a filter, then inspect products manually.</li>
+                  <li>Look for upcoming demand before the peak.</li>
+                  <li>Use multiple marketplaces where it makes sense.</li>
+                  <li>The recurring research habit is more useful than any one “top niches” list.</li>
+                </ul>
+                <div class="watchrow">
+                  <a class="btn small" target="_blank" href="https://www.youtube.com/watch?v=YCG7Wwmq_jk">Niche research example ↗</a>
+                  <a class="btn small secondary" target="_blank" href="https://www.youtube.com/@RyanHoguePassiveIncome">Channel ↗</a>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <div class="card span7">
+          <h2>The advice that repeats across channels</h2>
+          <div class="list">
+            <div class="list-item"><div class="num">1</div><div><b>Research before design.</b><br><small>Demand evidence should decide what gets design time.</small></div></div>
+            <div class="list-item"><div class="num">2</div><div><b>Niche down.</b><br><small>Specific role, event, breed, hobby or life stage beats “for everyone.”</small></div></div>
+            <div class="list-item"><div class="num">3</div><div><b>Publish enough to learn.</b><br><small>A controlled batch gives you data; perfection with three listings does not.</small></div></div>
+            <div class="list-item"><div class="num">4</div><div><b>Add value.</b><br><small>Personalization, better art, better mockups or a clearer buyer angle.</small></div></div>
+            <div class="list-item"><div class="num">5</div><div><b>Conversion beats SEO alone.</b><br><small>Search can surface a listing; the product still has to win the click and sale.</small></div></div>
+            <div class="list-item"><div class="num">6</div><div><b>Plan seasonal work early.</b><br><small>Publish before buyers enter peak shopping mode.</small></div></div>
+            <div class="list-item"><div class="num">7</div><div><b>IP checks are mandatory.</b><br><small>Trending does not mean legally sellable.</small></div></div>
+          </div>
+        </div>
+
+        <div class="card span5">
+          <h2>Where they differ</h2>
+          <p><b>Etsy-first creators</b> focus on search intent, listing conversion, personalization and marketplace traffic.</p>
+          <p><b>Amazon Merch creators</b> emphasize BSR, scalable niches and recurring research/upload habits.</p>
+          <p><b>Shopify/brand creators</b> emphasize ownership and brand control, but you must create more of your own traffic.</p>
+          <div class="callout warn"><b>Filter their advice:</b> many creators earn from courses, software referrals and affiliate links. Keep useful strategy separate from “you need this tool” marketing.</div>
+        </div>
+
+        <div class="card span12">
+          <h2>Combined creator playbook</h2>
+          <div class="tablewrap" style="max-height:none">
+            <table>
+              <thead><tr><th>Step</th><th>Action</th><th>Influence</th><th>Done when…</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Choose one primary T-shirt blank + fulfillment flow.</td><td>Cassiy + Heather</td><td>Cost, size chart, shipping and mockup are known.</td></tr>
+                <tr><td>2</td><td>Research 50 micro-niches using Etsy, trend tools and Amazon BSR.</td><td>Shawna + Ryan + Detour</td><td>You have a scored opportunity sheet.</td></tr>
+                <tr><td>3</td><td>Select 3–5 niche lanes and define the buyer.</td><td>Shimmy + Cassiy</td><td>You know exactly who each design is for.</td></tr>
+                <tr><td>4</td><td>Create 15–20 original tests.</td><td>Detour + Shawna</td><td>Readable, differentiated designs exist.</td></tr>
+                <tr><td>5</td><td>Trademark/IP review final phrases and art.</td><td>Shimmy</td><td>No knowingly unlicensed team/brand/character/celebrity content.</td></tr>
+                <tr><td>6</td><td>Publish with complete pricing, mockups, policies and SEO.</td><td>Heather + Wholesale Ted</td><td>The listing looks finished and trustworthy.</td></tr>
+                <tr><td>7</td><td>Track impressions → clicks → favorites → sales.</td><td>Shawna + Cassiy</td><td>Every listing gets a diagnosis.</td></tr>
+                <tr><td>8</td><td>Variant winners; stop feeding dead ideas.</td><td>Consensus</td><td>New listings increasingly come from proven families.</td></tr>
+                <tr><td>9</td><td>Research weekly and plan seasons 6–10 weeks early.</td><td>Ryan + Detour + Shawna</td><td>Research becomes a recurring routine.</td></tr>
+                <tr><td>10</td><td>Expand to an own-site brand only after demand is proven.</td><td>Wholesale Ted + Shimmy</td><td>You already know which products/niches work.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card span12">
+          <h2>Video library</h2>
+          <div class="tablewrap" style="max-height:none">
+            <table>
+              <thead><tr><th>Creator</th><th>Resource</th><th>What to learn</th><th>Link</th></tr></thead>
+              <tbody>
+                <tr><td>Cassiy Johnson</td><td>7 Strategies to Grow Fast</td><td>Launch/scaling framework</td><td><a target="_blank" href="https://www.youtube.com/watch?v=QhX1pgsfFlc">Watch ↗</a></td></tr>
+                <tr><td>Simply Shawna</td><td>2026 Etsy SEO Strategy</td><td>Trend bending + conversion</td><td><a target="_blank" href="https://www.youtube.com/watch?v=PvWZqtNX_mk">Watch ↗</a></td></tr>
+                <tr><td>Heather Studio</td><td>Full Etsy + POD Beginner Guide</td><td>Technical setup</td><td><a target="_blank" href="https://www.youtube.com/watch?v=sIKQ5Rd_Iiw">Watch ↗</a></td></tr>
+                <tr><td>Heather Studio</td><td>Etsy SEO Guide</td><td>Keywords/titles/tags/descriptions</td><td><a target="_blank" href="https://www.youtube.com/watch?v=zqvnfXg6loo">Watch ↗</a></td></tr>
+                <tr><td>Detour Shirts</td><td>5 Free Ways to Find T-Shirt Trends</td><td>Trend discovery</td><td><a target="_blank" href="https://www.youtube.com/watch?v=7zg2RM8GVQc">Watch ↗</a></td></tr>
+                <tr><td>Detour Shirts</td><td>10 Q4 Niches</td><td>Seasonal niche research</td><td><a target="_blank" href="https://www.youtube.com/watch?v=KHIYhViwmD0">Watch ↗</a></td></tr>
+                <tr><td>Wholesale Ted</td><td>Shopify POD Setup</td><td>Own-store workflow</td><td><a target="_blank" href="https://www.youtube.com/watch?v=bk-p1ZURaSE">Watch ↗</a></td></tr>
+                <tr><td>Shimmy Morris</td><td>Successful POD Business Framework</td><td>Business structure</td><td><a target="_blank" href="https://www.youtube.com/watch?v=7R1kF3oPQLY">Watch ↗</a></td></tr>
+                <tr><td>Ryan Hogue</td><td>Top 5 Niches research example</td><td>Amazon BSR / niche habit</td><td><a target="_blank" href="https://www.youtube.com/watch?v=YCG7Wwmq_jk">Watch ↗</a></td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
