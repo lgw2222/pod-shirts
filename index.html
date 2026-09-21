@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POD Trend Command Center</title>
+<meta name="description" content="A research-driven print-on-demand T-shirt dashboard for trends, niches, products, pricing, research sources, and launch planning." />
+<style>
+:root{
+  --bg:#081018;--panel:#0f1a25;--panel2:#142232;--text:#eef5fb;--muted:#93a6b8;
+  --line:#26384a;--accent:#55d7ff;--accent2:#8df59c;--warn:#ffc857;--danger:#ff7a90;
+  --purple:#b69cff;--shadow:0 16px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
+radial-gradient(circle at 20% -10%,rgba(85,215,255,.12),transparent 35%),
+radial-gradient(circle at 90% 10%,rgba(182,156,255,.10),transparent 30%),var(--bg);color:var(--text)}
+a{color:inherit}
+button,input,select{font:inherit}
+.shell{max-width:1450px;margin:auto;padding:22px}
+.hero{background:linear-gradient(135deg,rgba(85,215,255,.13),rgba(182,156,255,.10));border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{margin:7px 0 6px;font-size:clamp(30px,5vw,56px);line-height:1.02}
+.subtitle{color:var(--muted);max-width:920px;font-size:17px;line-height:1.6}
+.hero-grid{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end}
+.statusbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{display:inline-flex;gap:7px;align-items:center;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(8,16,24,.55);font-size:13px;color:#c7d4df}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent2)}
+.dot.warn{background:var(--warn);box-shadow:0 0 12px var(--warn)}
+.nav{display:flex;gap:8px;overflow:auto;padding:14px 0 2px;position:sticky;top:0;z-index:30;background:linear-gradient(var(--bg) 68%,transparent)}
+.nav button{white-space:nowrap;border:1px solid var(--line);color:#c9d7e3;background:#0b1520;border-radius:12px;padding:10px 14px;cursor:pointer}
+.nav button.active{color:#051018;background:var(--accent);border-color:var(--accent);font-weight:800}
+.section{display:none;padding-top:18px}.section.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:linear-gradient(180deg,rgba(20,34,50,.94),rgba(13,24,36,.96));border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.16)}
+.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}.span3{grid-column:span 3}
+@media(max-width:950px){.span8,.span7,.span6,.span5,.span4,.span3{grid-column:span 12}.hero-grid{grid-template-columns:1fr}}
+.card h2,.card h3{margin:0 0 10px}.card p{color:#b3c2cf;line-height:1.55}
+.metric{font-size:34px;font-weight:900;letter-spacing:-.04em}.metric small{font-size:13px;color:var(--muted);letter-spacing:0}
+.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.11em;font-weight:800}
+.good{color:var(--accent2)}.warning{color:var(--warn)}.danger{color:var(--danger)}.blue{color:var(--accent)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;overflow:hidden}
+th{text-align:left;color:#9eb1c1;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#101c29}
+td{padding:12px;border-bottom:1px solid #213141;vertical-align:top;color:#dce6ee}
+tr:hover td{background:rgba(85,215,255,.035)}
+.tablewrap{max-height:560px;overflow:auto;border:1px solid var(--line);border-radius:14px}
+.score{display:inline-flex;min-width:44px;justify-content:center;padding:5px 8px;border-radius:9px;background:#102c26;color:#8df59c;font-weight:900}
+.score.mid{background:#312817;color:#ffc857}.score.low{background:#331d26;color:#ff91a4}
+.badge{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:5px 8px;margin:2px 4px 2px 0;border:1px solid var(--line);color:#cddae5}
+.badge.green{color:#9cf8ad;border-color:#295c3a;background:#10281a}.badge.yellow{color:#ffd779;border-color:#654f22;background:#2d2414}.badge.red{color:#ff9cae;border-color:#64303e;background:#321923}.badge.blue{color:#89e6ff;border-color:#23596a;background:#102c36}.badge.purple{color:#cbbcff;border-color:#504174;background:#231d36}
+.btn{border:0;border-radius:11px;padding:10px 14px;background:var(--accent);color:#04131a;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.secondary{background:#152537;color:#dce8f2;border:1px solid var(--line)}
+.btn.small{padding:7px 10px;font-size:12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+input,select{background:#0c1722;color:#edf6fc;border:1px solid var(--line);border-radius:11px;padding:10px 12px;outline:none}
+input:focus,select:focus{border-color:var(--accent)}
+.kicker{color:var(--accent);font-weight:800;font-size:13px}
+.callout{padding:15px;border:1px solid #35516a;background:#0d2030;border-radius:14px;color:#c7d8e5;line-height:1.55}
+.callout.warn{border-color:#69511c;background:#2b2312}.callout.danger{border-color:#60303b;background:#2c1820}
+.list{display:grid;gap:9px;margin-top:12px}.list-item{display:flex;gap:10px;align-items:flex-start;padding:11px;background:#0c1722;border:1px solid #223346;border-radius:12px}
+.num{flex:0 0 30px;height:30px;border-radius:9px;background:#173246;color:var(--accent);display:grid;place-items:center;font-weight:900}
+.progress{height:10px;background:#09131d;border-radius:999px;overflow:hidden;border:1px solid #22364a}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.source{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#0c1722}
+.source + .source{margin-top:9px}.source small{color:var(--muted)}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:850px){.timeline{grid-template-columns:1fr}}
+.phase{border:1px solid var(--line);border-radius:14px;padding:14px;background:#0b1722}.phase b{display:block;margin-bottom:8px}.phase ul{padding-left:18px;color:#b8c8d5}
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.trend{padding:13px;border:1px solid var(--line);border-radius:13px;background:#0c1722;min-height:125px}
+.trend h4{margin:3px 0 8px;font-size:17px}.trend .meta{font-size:12px;color:var(--muted)}
+.livebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.livebar .spacer{flex:1}
+.check{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #203143}.check input{margin-top:3px}
+.calc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.calc-grid label{font-size:12px;color:var(--muted)}.calc-grid input{width:100%;margin-top:5px}
+@media(max-width:700px){.calc-grid{grid-template-columns:1fr}}
+.result{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}@media(max-width:700px){.result{grid-template-columns:1fr 1fr}}
+.result .box{padding:14px;border:1px solid var(--line);border-radius:12px;background:#0b1721}
+.foot{color:#7f93a4;font-size:12px;text-align:center;padding:28px}
+.codeword{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#bfefff}
+.funnel{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.funnel span{padding:9px 12px;border:1px solid var(--line);border-radius:11px;background:#0b1722}.arrow{color:#5c7286}
+textarea{width:100%;min-height:120px;background:#0c1722;color:#eaf4fb;border:1px solid var(--line);border-radius:12px;padding:12px}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">MajorTeesDesigns • Research-first operating system</div>
+        <h1>POD Trend Command Center</h1>
+        <div class="subtitle">Success first, passion second. This dashboard combines proven T-shirt demand patterns, live trend monitoring, IP-risk flags, product choices, margins, design angles, and a repeatable launch system so you can decide what to make based on evidence.</div>
+        <div class="statusbar">
+          <span class="pill"><span class="dot"></span> Live trend engine enabled</span>
+          <span class="pill">8 research sources tracked</span>
+          <span class="pill">Auto-refresh: 30 minutes while open</span>
+          <span class="pill" id="lastUpdatePill">Last data: built-in snapshot</span>
+        </div>
+      </div>
+      <div><button class="btn" onclick="switchTab('trends');refreshTrends(true)">↻ Refresh trends now</button></div>
+    </div>
+  </header>
+
+  <nav class="nav" id="nav">
+    <button data-tab="overview" class="active">Overview</button>
+    <button data-tab="trends">Live Trends</button>
+    <button data-tab="opportunities">Opportunity Matrix</button>
+    <button data-tab="examples">Design Examples</button>
+    <button data-tab="gameplan">90-Day Game Plan</button>
+    <button data-tab="products">Products & Pricing</button>
+    <button data-tab="calculator">Profit Calculator</button>
+    <button data-tab="sources">Sources</button>
+  </nav>
+
+  <main>
+    <section id="overview" class="section active">
+      <div class="grid">
+        <div class="card span3"><div class="label">Best first lane</div><div class="metric">Custom</div><p>Personalized + micro-niche gives you purchase intent and differentiation instead of pure artwork competition.</p></div>
+        <div class="card span3"><div class="label">Best evergreen engine</div><div class="metric">Jobs</div><p>Profession + humor/identity repeats across multiple POD datasets and gift occasions.</p></div>
+        <div class="card span3"><div class="label">Best order-size angle</div><div class="metric">Groups</div><p>Family, reunion, vacation, business, team and event designs can create multi-shirt orders.</p></div>
+        <div class="card span3"><div class="label">Best current timing</div><div class="metric">Q4</div><p>September is the window to push Halloween now and Christmas/family matching immediately behind it.</p></div>
+
+        <div class="card span8">
+          <h2>The core strategy</h2>
+          <p>Do not ask “what shirt do I like?” first. Ask: <b>who is already buying, what exact identity/event are they buying for, and can we make a cleaner, more specific offer?</b></p>
+          <div class="funnel">
+            <span>Demand signal</span><span class="arrow">→</span><span>Micro-niche</span><span class="arrow">→</span><span>Original angle</span><span class="arrow">→</span><span>Mockup test</span><span class="arrow">→</span><span>Listing</span><span class="arrow">→</span><span>Winner variants</span>
+          </div>
+          <div class="callout" style="margin-top:14px"><b>Working hypothesis:</b> the best repeatable POD opportunities are usually intersections: <span class="codeword">profession + humor</span>, <span class="codeword">pet breed + family role</span>, <span class="codeword">hobby + retirement</span>, <span class="codeword">season + matching group</span>, or <span class="codeword">faith + identity</span>.</div>
+        </div>
+        <div class="card span4">
+          <h3>Research consensus</h3>
+          <div class="list">
+            <div class="list-item"><div class="num">1</div><div><b>Specific beats generic</b><br><small>Micro-communities convert better than “everyone” designs.</small></div></div>
+            <div class="list-item"><div class="num">2</div><div><b>Identity sells</b><br><small>Jobs, family roles, breeds, hobbies, regions and faith.</small></div></div>
+            <div class="list-item"><div class="num">3</div><div><b>Timing matters</b><br><small>Seasonal designs need to launch before the demand peak.</small></div></div>
+            <div class="list-item"><div class="num">4</div><div><b>Personalization protects margin</b><br><small>Harder to price-compare against thousands of identical listings.</small></div></div>
+          </div>
+        </div>
+
+        <div class="card span12">
+          <h2>What should you strive to do?</h2>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Priority</th><th>Market</th><th>Why it works</th><th>Best angle</th><th>Competition</th><th>Start now?</th></tr></thead>
+              <tbody id="priorityTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="trends" class="section">
+      <div class="grid">
+        <div class="card span12">
+          <div class="livebar">
+            <div><div class="kicker">LIVE TREND PULSE</div><h2 style="margin-top:3px">What is spiking right now?</h2></div>
+            <div class="spacer"></div>
+            <select id="trendFilter" onchange="renderTrends()">
+              <option value="all">All trends</option>
+              <option value="safe">Lower-risk POD fits</option>
+              <option value="review">Needs IP review</option>
+            </select>
+            <button class="btn secondary" onclick="refreshTrends(true)">↻ Refresh</button>
+          </div>
+          <p id="trendStatus">Loading live Google Trends data when available…</p>
+          <div class="callout warn"><b>Trend ≠ permission.</b> Athlete names, teams, leagues, celebrities, movies, TV, brands and many phrases can involve trademark, copyright or publicity rights. The dashboard intentionally flags them for review rather than telling you to print them.</div>
+          <div class="trend-grid" id="trendGrid" style="margin-top:14px"></div>
+        </div>
+
+        <div class="card span7">
+          <h2>Trend-to-product filter</h2>
+          <p>Use this before spending design time on anything viral.</p>
+          <div class="tablewrap" style="max-height:none">
+            <table>
+              <thead><tr><th>Question</th><th>Green light</th><th>Red flag</th></tr></thead>
+              <tbody>
+                <tr><td>Does a buyer identity exist?</td><td>Teacher, nurse, golfer, Dachshund owner</td><td>Random news topic with no apparel intent</td></tr>
+                <tr><td>Can it be original?</td><td>New phrase/art/visual system</td><td>Logo, player likeness, character, lyric, copied meme</td></tr>
+                <tr><td>Will it still matter after this week?</td><td>Season, life event, profession, hobby</td><td>One-day headline</td></tr>
+                <tr><td>Can you narrow it?</td><td>“Retired PE teacher golfer”</td><td>“Funny shirt”</td></tr>
+                <tr><td>Can the listing look better?</td><td>Better mockup, personalization, clearer offer</td><td>Same product as 10,000 competitors</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card span5">
+          <h2>Seasonal clock</h2>
+          <div id="seasonalClock"></div>
+          <p><small>Rule of thumb: start most seasonal uploads roughly 6–10 weeks before the event; test earlier when competition is heavy.</small></p>
+        </div>
+
+        <div class="card span12">
+          <h2>Always-open research panel</h2>
+          <p>The live feed catches broad cultural spikes. These links are where you verify whether the spike has <b>shopping intent</b> and whether a shirt niche is gaining traction.</p>
+          <div class="grid" id="researchButtons"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="opportunities" class="section">
+      <div class="grid">
+        <div class="card span12">
+          <div class="livebar">
+            <div><div class="kicker">OPPORTUNITY MATRIX</div><h2 style="margin-top:3px">Markets worth testing</h2></div>
+            <div class="spacer"></div>
+            <input id="oppSearch" placeholder="Filter niches…" oninput="renderOpportunities()" />
+            <select id="oppType" onchange="renderOpportunities()"><option value="all">All types</option><option>Evergreen</option><option>Seasonal</option><option>Trend</option></select>
+          </div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Score</th><th>Niche</th><th>Type</th><th>Demand evidence</th><th>Good sub-niches</th><th>Risk</th><th>Action</th></tr></thead>
+              <tbody id="oppTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="examples" class="section">
+      <div class="grid">
+        <div class="card span12">
+          <h2>Examples: turn a broad market into sellable concepts</h2>
+          <p>These are concept patterns, not claims that a specific phrase is legally clear. Trademark-check final wording before publishing.</p>
+          <div class="tablewrap" style="max-height:none">
+            <table>
+              <thead><tr><th>Broad niche</th><th>Weak idea</th><th>Better micro-niche</th><th>Design direction</th><th>Product angle</th></tr></thead>
+              <tbody>
+                <tr><td>Teachers</td><td>Teacher shirt</td><td>Retired kindergarten teacher + travel</td><td>Vintage luggage-tag typography, original school icons</td><td>Retirement gift / Comfort Colors</td></tr>
+                <tr><td>Pets</td><td>Dog mom</td><td>Dachshund mom + Christmas</td><td>Original long-dog holiday illustration</td><td>Matching family + pet-owner gift</td></tr>
+                <tr><td>Golf</td><td>Funny golf shirt</td><td>New grandpa + golf</td><td>Minimal badge graphic + original line</td><td>Father’s Day / birthday</td></tr>
+                <tr><td>Nurses</td><td>Nurse life</td><td>Night-shift pediatric nurse</td><td>Clean retro typography + subtle moon motif</td><td>Work identity / gift</td></tr>
+                <tr><td>Family</td><td>Christmas family shirt</td><td>Custom family surname + trip/year</td><td>Personalized crest / destination motif</td><td>Multi-shirt order</td></tr>
+                <tr><td>Faith</td><td>Christian shirt</td><td>Faith + profession</td><td>Original understated typography</td><td>Everyday premium tee</td></tr>
+                <tr><td>Camping</td><td>Camping shirt</td><td>RV grandparents + national park road trips</td><td>Vintage travel-poster aesthetic</td><td>Gift / trip shirt</td></tr>
+                <tr><td>Local pride</td><td>Kentucky shirt</td><td>Western Kentucky hometown identity</td><td>Original regional typography/map-inspired motif</td><td>Local gifting / events</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card span6">
+          <h2>Five reusable design systems</h2>
+          <div class="list">
+            <div class="list-item"><div class="num">A</div><div><b>Vintage collegiate</b><br><small>Distressed type, badges, mascots only if original/non-infringing, town/identity language.</small></div></div>
+            <div class="list-item"><div class="num">B</div><div><b>Modern athletic</b><br><small>Bold shapes, compact marks, performance-shirt compatibility.</small></div></div>
+            <div class="list-item"><div class="num">C</div><div><b>Minimal chest + back</b><br><small>Small front identity mark, larger storytelling graphic on back.</small></div></div>
+            <div class="list-item"><div class="num">D</div><div><b>Original illustration</b><br><small>Pets, occupations, hobbies and seasonal scenes.</small></div></div>
+            <div class="list-item"><div class="num">E</div><div><b>Typography + insider humor</b><br><small>Best when only the target buyer immediately “gets it.”</small></div></div>
+          </div>
+        </div>
+        <div class="card span6">
+          <h2>Winner expansion rule</h2>
+          <p>If one concept begins converting, do not immediately abandon it for a new idea. Expand it.</p>
+          <div class="list">
+            <div class="list-item"><div class="num">1</div><div>Same concept → premium Comfort Colors version</div></div>
+            <div class="list-item"><div class="num">2</div><div>Same concept → alternate layout / back print</div></div>
+            <div class="list-item"><div class="num">3</div><div>Same concept → adjacent identity (Mom → Grandma, Nurse → ER Nurse)</div></div>
+            <div class="list-item"><div class="num">4</div><div>Same concept → seasonal variant</div></div>
+            <div class="list-item"><div class="num">5</div><div>Same concept → hoodie/sweatshirt only after demand appears</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gameplan" class="section">
+      <div class="grid">
+        <div class="card span12">
+          <h2>90-day operating plan</h2>
+          <div class="timeline">
+            <div class="phase"><b>Days 1–14 • Find</b><ul><li>Research 50 micro-niches</li><li>Score demand vs competition</li><li>Pick 3–5 lanes</li><li>Create 15–20 test designs</li><li>Build one mockup system</li></ul></div>
+            <div class="phase"><b>Days 15–30 • Test</b><ul><li>Publish 20–35 intentional listings</li><li>Track impressions/clicks/favorites</li><li>Test hero images</li><li>Cut weak concepts</li><li>Launch seasonal products early</li></ul></div>
+            <div class="phase"><b>Days 31–60 • Double down</b><ul><li>Variant every early winner</li><li>Add personalization where useful</li><li>Run ads only on evidence-backed listings</li><li>Create short-form content around winning audiences</li></ul></div>
+            <div class="phase"><b>Days 61–90 • Scale</b><ul><li>Build collections from proven concepts</li><li>Improve AOV with matching/group products</li><li>Standardize listing production</li><li>Consider own-site collection only after winners emerge</li></ul></div>
+          </div>
+        </div>
+
+        <div class="card span7">
+          <h2>Weekly scoreboard</h2>
+          <div id="weeklyChecklist"></div>
+        </div>
+        <div class="card span5">
+          <h2>Decision rules</h2>
+          <div class="list">
+            <div class="list-item"><div class="num">?</div><div><b>No impressions</b><br><small>Keyword, niche or marketplace demand problem.</small></div></div>
+            <div class="list-item"><div class="num">👁</div><div><b>Impressions, no clicks</b><br><small>Thumbnail/design/offer problem.</small></div></div>
+            <div class="list-item"><div class="num">♡</div><div><b>Clicks/favorites, no orders</b><br><small>Price, trust, shipping or product mismatch.</small></div></div>
+            <div class="list-item"><div class="num">$</div><div><b>Orders</b><br><small>Make adjacent variants before chasing a brand-new idea.</small></div></div>
+          </div>
+        </div>
+
+        <div class="card span12">
+          <h2>Idea log</h2>
+          <p>Saved locally in your browser. Use this for trend ideas before deciding whether they deserve design time.</p>
+          <textarea id="notes" placeholder="Example: 'Retired PE teacher + golf' — check Etsy Marketplace Insights, trademark phrase, test vintage badge + Comfort Colors."></textarea>
+          <div class="toolbar"><button class="btn secondary" onclick="saveNotes()">Save notes</button><span id="noteStatus" class="good"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="section">
+      <div class="grid">
+        <div class="card span12">
+          <h2>Start with a very small product stack</h2>
+          <div class="tablewrap" style="max-height:none">
+            <table>
+              <thead><tr><th>Role</th><th>Blank</th><th>Recent Printify starting price*</th><th>Suggested test price</th><th>Why</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge green">Premium hero</span></td><td><b>Comfort Colors 1717</b></td><td>$12.65</td><td>$27.99–$32.99</td><td>Garment-dyed, premium/vintage positioning, current Printify bestseller.</td></tr>
+                <tr><td><span class="badge blue">Value</span></td><td><b>Gildan 64000 Softstyle</b></td><td>$8.11</td><td>$19.99–$24.99</td><td>Lower production cost and broad color/size availability.</td></tr>
+                <tr><td><span class="badge blue">Budget</span></td><td><b>Gildan 5000 Heavy Cotton</b></td><td>$8.55</td><td>$18.99–$23.99</td><td>Mass-market basic and current bestseller.</td></tr>
+                <tr><td><span class="badge purple">Soft retail</span></td><td><b>Bella+Canvas 3001</b></td><td>$11.29</td><td>$24.99–$29.99</td><td>Popular retail-feel option with large color range.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p><small>*Snapshot from Printify bestseller page checked September 2026; provider, color, size and Premium status can change the cost.</small></p>
+        </div>
+        <div class="card span6">
+          <h2>Listing system</h2>
+          <div class="list">
+            <div class="list-item"><div class="num">1</div><div>Hero lifestyle mockup designed for the click</div></div>
+            <div class="list-item"><div class="num">2</div><div>Clear front/back views</div></div>
+            <div class="list-item"><div class="num">3</div><div>Graphic detail close-up</div></div>
+            <div class="list-item"><div class="num">4</div><div>Color choices</div></div>
+            <div class="list-item"><div class="num">5</div><div>Size/fit information</div></div>
+            <div class="list-item"><div class="num">6</div><div>Material/features</div></div>
+            <div class="list-item"><div class="num">7</div><div>Personalization instructions when applicable</div></div>
+            <div class="list-item"><div class="num">8</div><div>Short product video</div></div>
+          </div>
+        </div>
+        <div class="card span6">
+          <h2>Pricing principle</h2>
+          <p>Judge the business on <b>contribution profit</b>, not revenue screenshots.</p>
+          <div class="callout">Selling price − production − shipping you cover − marketplace/payment fees − ads = contribution profit.</div>
+          <p>Use the calculator tab before discounting. A product that “sells” but leaves $2 after ads is not necessarily a winner.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculator" class="section">
+      <div class="grid">
+        <div class="card span8">
+          <h2>Per-order profit calculator</h2>
+          <div class="calc-grid">
+            <label>Selling price<input type="number" step=".01" id="sell" value="29.99" oninput="calc()"></label>
+            <label>Production cost<input type="number" step=".01" id="prod" value="12.65" oninput="calc()"></label>
+            <label>Shipping you pay<input type="number" step=".01" id="ship" value="0" oninput="calc()"></label>
+            <label>Transaction fee %<input type="number" step=".1" id="txn" value="6.5" oninput="calc()"></label>
+            <label>Payment fee %<input type="number" step=".1" id="paypct" value="3" oninput="calc()"></label>
+            <label>Payment fixed fee<input type="number" step=".01" id="payfix" value=".25" oninput="calc()"></label>
+            <label>Listing allocation<input type="number" step=".01" id="listing" value=".20" oninput="calc()"></label>
+            <label>Ad cost/order<input type="number" step=".01" id="ad" value="0" oninput="calc()"></label>
+            <label>Other cost/order<input type="number" step=".01" id="other" value="0" oninput="calc()"></label>
+          </div>
+          <div class="result">
+            <div class="box"><div class="label">Profit</div><div class="metric" id="profit">$0</div></div>
+            <div class="box"><div class="label">Margin</div><div class="metric" id="margin">0%</div></div>
+            <div class="box"><div class="label">Marketplace fees</div><div class="metric" id="fees">$0</div></div>
+            <div class="box"><div class="label">Break-even ad spend</div><div class="metric" id="breakeven">$0</div></div>
+          </div>
+        </div>
+        <div class="card span4">
+          <h2>Margin target</h2>
+          <p>A practical internal target is to protect enough contribution margin to absorb refunds, ad testing and occasional production problems.</p>
+          <div class="progress"><i id="marginbar" style="width:0"></i></div>
+          <p id="marginAdvice"></p>
+          <div class="callout warn">Marketplace fee structures can change. Verify current Etsy fees before using this calculator for accounting.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources" class="section">
+      <div class="grid">
+        <div class="card span12">
+          <h2>Research sources & what each one tells us</h2>
+          <p>No single tool is treated as “truth.” Search tools measure different things: search interest, estimated sales, Amazon BSR, marketplace activity or supplier-side bestsellers.</p>
+          <div id="sourceList"></div>
+        </div>
+        <div class="card span12">
+          <h2>Evidence snapshot used in this dashboard</h2>
+          <div class="tablewrap" style="max-height:none">
+            <table>
+              <thead><tr><th>Source</th><th>Observed signal</th><th>How to use it</th></tr></thead>
+              <tbody>
+                <tr><td>eRank Q1 2026</td><td>“tshirt” ranked #1 and “shirt” #3 among Etsy searches in its Q1 report.</td><td>Confirms broad category demand; does not tell us which micro-niche to choose.</td></tr>
+                <tr><td>Merch Titans 2026</td><td>Highlights professions, breed-specific pets, humor, family roles, vintage, hobbies, regional pride and seasonal designs.</td><td>Use as a category map, then independently validate exact keywords.</td></tr>
+                <tr><td>EverBee 2026</td><td>Highlights hyper-personalization, profession-specific, pets, outdoor/adventure, humor, travel, retro/vintage and seasonal.</td><td>Good second opinion for durable POD directions.</td></tr>
+                <tr><td>Printify bestsellers</td><td>Comfort Colors 1717, Gildan 64000, Gildan 5000 and Bella+Canvas 3001 appear among bestseller apparel.</td><td>Keep the blank catalog simple and proven.</td></tr>
+                <tr><td>Merch Dominator</td><td>Provides keyword trend tools for Merch/Amazon/Etsy/Redbubble research.</td><td>Use for trend discovery, then verify IP and marketplace demand.</td></tr>
+                <tr><td>Google Trends</td><td>Fast-moving US search spikes.</td><td>Discovery only. Most breaking trends are not automatically good or legal shirt ideas.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card span12">
+          <div class="callout"><b>Auto-update limitation:</b> this is a single HTML file, so it can refresh public trend feeds while the page is open. Some websites block cross-origin browser requests, and Etsy/eRank/EverBee data often requires their own site or account. For truly always-on scheduled scraping while your computer is off, you would host a small backend/cron job and feed this dashboard a JSON file/API.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="foot">POD Trend Command Center • Built as a single-file local dashboard • Research snapshot: September 2026</div>
+</div>
+
+<script>
+const opportunities = [
+{score:94,niche:"Personalized + micro-niche",type:"Evergreen",evidence:"Strong Etsy/POD consensus; personalization reduces direct price comparison.",subs:"Custom family, business logo, photo, destination, name/year",risk:"Low–Medium",action:"Build 5 customizable templates"},
+{score:92,niche:"Profession + humor/identity",type:"Evergreen",evidence:"Merch Titans + EverBee repeatedly highlight profession-specific demand.",subs:"Nurse specialty, teacher grade, trades, retirement",risk:"Low",action:"Research 10 occupations × 3 insider angles"},
+{score:90,niche:"Family / matching groups",type:"Evergreen",evidence:"Gift identity + multiple units per order.",subs:"Reunion, vacation, Christmas, new grandparent, wedding weekend",risk:"Low",action:"Build personalization-first group template"},
+{score:89,niche:"Seasonal micro-niches",type:"Seasonal",evidence:"Recurring predictable demand; eRank monthly reports show seasonal search surges.",subs:"Halloween teacher, Christmas dog family, fall nurse, graduation",risk:"Low–Medium",action:"Launch 6–10 weeks ahead"},
+{score:87,niche:"Pet breed + identity",type:"Evergreen",evidence:"Merch Titans + EverBee support breed/pet-specific targeting.",subs:"Dachshund mom, Golden Retriever dad, Corgi grandma",risk:"Low",action:"Pick 5 breeds; make 3 identity variants each"},
+{score:85,niche:"Hobby + life stage",type:"Evergreen",evidence:"Hobbies/passions recur across POD category analysis.",subs:"Retired golfer, grandpa fishing, RV grandparents, gardener mom",risk:"Low",action:"Pair hobby with age/role/event"},
+{score:84,niche:"Faith + identity",type:"Evergreen",evidence:"Persistent Etsy category presence and strong gifting/identity overlap.",subs:"Faith + profession, mom, outdoors, subtle scripture-inspired original art",risk:"Medium",action:"Use original wording/art; avoid copied lyrics/art"},
+{score:81,niche:"Regional / hometown pride",type:"Evergreen",evidence:"Regional identity is a repeat POD category.",subs:"Town + state, local sayings, coordinates, regional hobbies",risk:"Medium",action:"Use original place-based graphics; trademark-check phrases"},
+{score:79,niche:"Retro/vintage applied to a niche",type:"Evergreen",evidence:"EverBee + Merch Titans cite retro/vintage as persistent design language.",subs:"Retro nurse, dog breed, golf, camping, local pride",risk:"Low",action:"Use as style layer, not standalone niche"},
+{score:76,niche:"Fast trend + safe adjacent concept",type:"Trend",evidence:"Google Trends can reveal early attention spikes.",subs:"Season, generic sport culture, event-adjacent humor",risk:"High",action:"IP review before artwork; avoid names/logos/likenesses"}
+];
+
+const priority = [
+["1","Personalized + micro-niche","Differentiates product; clear purchase intent","Name/photo/group/event customization","Medium","YES"],
+["2","Profession + humor","Year-round identity + gifts","Specialty/role-specific inside joke","Medium","YES"],
+["3","Family / matching","Potential multi-unit order","Trip/reunion/holiday customization","Medium","YES"],
+["4","Seasonal micro-niches","Predictable demand spikes","Season + identity intersection","High","YES — timed"],
+["5","Pet breed + identity","Passionate, highly specific audiences","Breed + family role/humor","Medium","YES"],
+["6","Hobby + life stage","Evergreen and giftable","Retirement/grandparent + hobby","Medium","YES"],
+["7","Faith + identity","Evergreen identity + gifting","Faith + profession/family/hobby","Medium","TEST"],
+["8","Regional pride","Strong identity and gifting","Town/state + original art","Medium","TEST"],
+["9","Retro/vintage","Useful style across niches","Apply to proven niche","High","STYLE, not niche"],
+["10","Fast cultural trends","High upside but short-lived","Safe adjacent concepts only","Very high","SELECTIVE"]
+];
+
+const sources = [
+{name:"eRank",what:"Etsy keyword/search trend reports and SEO research.",url:"https://help.erank.com/blog/top-etsy-searches-q1-2026/",note:"Q1 2026 report: 'tshirt' #1, 'shirt' #3."},
+{name:"Etsy Marketplace / Bestsellers",what:"Direct marketplace examples and current buyer-facing listings.",url:"https://www.etsy.com/market/t_shirt_bestsellers",note:"Use to inspect product presentation, pricing, personalization and review velocity."},
+{name:"EtsyHunt",what:"Third-party Etsy listing and estimated sales/revenue research.",url:"https://etsyhunt.com/best-etsy-t-shirts",note:"Estimates are directional, not audited seller data."},
+{name:"EverBee",what:"Etsy/POD product research and 2026 niche analysis.",url:"https://blog.everbee.io/2026-print-on-demand-market-trends-lucrative-niches",note:"Supports personalization, profession, pets, outdoor, humor, travel, retro and seasonal."},
+{name:"Merch Titans",what:"Amazon Merch/Etsy/POD niche and bestseller analysis.",url:"https://merchtitans.com/blog/best-selling-t-shirt-designs",note:"Supports profession, breed-specific pet, humor, family role, vintage, hobby and seasonal targeting."},
+{name:"InsightFactory",what:"POD niche and trend discovery research.",url:"https://insightfactory.app/tshirt-niches-list/",note:"Useful for generating evergreen niche lists to validate elsewhere."},
+{name:"Merch Dominator",what:"Keyword trend tools for Merch by Amazon, Etsy, Redbubble and related research.",url:"https://merchdominator.com/features/keyword-trends",note:"Trend discovery; always validate trademark/IP separately."},
+{name:"Printify Bestsellers",what:"Supplier-side current bestseller product catalog.",url:"https://printify.com/app/products/bestsellers/",note:"Useful for choosing blanks; production prices can change."},
+{name:"Google Trends",what:"Current US search spikes and trend velocity.",url:"https://trends.google.com/trending?geo=US",note:"Discovery signal only; a news/sports trend is not automatically a merch opportunity."}
+];
+
+const researchLinks = [
+["Google Trends","Broad live cultural spikes","https://trends.google.com/trending?geo=US"],
+["Etsy Marketplace","Inspect live listings and presentation","https://www.etsy.com/market/t_shirt_bestsellers"],
+["eRank","Etsy-specific search trend reports","https://help.erank.com/blog/"],
+["EtsyHunt","Estimated Etsy listing sales/revenue","https://etsyhunt.com/best-etsy-t-shirts"],
+["EverBee","POD/Etsy niche research","https://blog.everbee.io/2026-print-on-demand-market-trends-lucrative-niches"],
+["Merch Titans","Amazon Merch/POD category research","https://merchtitans.com/blog/best-selling-t-shirt-designs"],
+["Merch Dominator","Keyword trend discovery","https://merchdominator.com/features/keyword-trends"],
+["Printify","Supplier-side bestseller blanks","https://printify.com/app/products/bestsellers/"]
+];
+
+const fallbackTrends = [
+{title:"Halloween",traffic:"Seasonal window",pod:"safe",why:"High seasonal apparel fit. Narrow by profession, family, pet breed or hobby."},
+{title:"Christmas / matching family",traffic:"Build now",pod:"safe",why:"Multi-unit order potential + personalization."},
+{title:"Teacher seasonal designs",traffic:"Evergreen + Q4",pod:"safe",why:"Profession identity + seasonal gifting."},
+{title:"Nurse specialty humor",traffic:"Evergreen",pod:"safe",why:"Strong profession niche when made specialty-specific."},
+{title:"Pet breed + holiday",traffic:"Q4",pod:"safe",why:"Breed specificity + seasonal gift intent."},
+{title:"Caleb Williams",traffic:"500K+ broad Google searches in latest snapshot",pod:"review",why:"Athlete/publicity/team/IP risk. Do not print name/likeness without rights."},
+{title:"Browns",traffic:"200K+ broad Google searches in latest snapshot",pod:"review",why:"Professional team trademark risk. Use only as research signal."},
+{title:"Packers",traffic:"200K+ broad Google searches in latest snapshot",pod:"review",why:"Professional team trademark risk. Use only as research signal."}
+];
+
+let liveTrends = [...fallbackTrends];
+
+function switchTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const b=[...document.querySelectorAll('.nav button')].find(x=>x.dataset.tab===id); if(b)b.classList.add('active');
+  window.scrollTo({top:document.querySelector('.nav').offsetTop-5,behavior:'smooth'});
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+
+function renderPriority(){
+ document.getElementById('priorityTable').innerHTML = priority.map(r=>`<tr>
+ <td><span class="score ${+r[0]>6?'mid':''}">${r[0]}</span></td><td><b>${r[1]}</b></td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td></tr>`).join('');
+}
+
+function riskBadge(risk){
+ const cls=risk==="Low"?"green":risk==="Medium"||risk==="Low–Medium"?"yellow":"red";
+ return `<span class="badge ${cls}">${risk}</span>`;
+}
+function renderOpportunities(){
+ const q=(document.getElementById('oppSearch')?.value||'').toLowerCase();
+ const t=document.getElementById('oppType')?.value||'all';
+ const rows=opportunities.filter(x=>(!q||JSON.stringify(x).toLowerCase().includes(q))&&(t==='all'||x.type===t));
+ document.getElementById('oppTable').innerHTML=rows.map(x=>{
+   const sc=x.score>=88?'':x.score>=82?'mid':'low';
+   return `<tr><td><span class="score ${sc}">${x.score}</span></td><td><b>${x.niche}</b></td><td>${x.type}</td><td>${x.evidence}</td><td>${x.subs}</td><td>${riskBadge(x.risk)}</td><td>${x.action}</td></tr>`;
+ }).join('');
+}
+
+function renderSources(){
+ document.getElementById('sourceList').innerHTML=sources.map(s=>`<div class="source"><div><b>${s.name}</b><br><small>${s.what}</small><p style="margin:6px 0 0">${s.note}</p></div><a class="btn small secondary" target="_blank" rel="noopener" href="${s.url}">Open source ↗</a></div>`).join('');
+ document.getElementById('researchButtons').innerHTML=researchLinks.map(r=>`<div class="card span3"><b>${r[0]}</b><p>${r[1]}</p><a class="btn small secondary" href="${r[2]}" target="_blank" rel="noopener">Open live ↗</a></div>`).join('');
+}
+
+function classifyTrend(title){
+ const s=title.toLowerCase();
+ const risky=["nfl","nba","mlb","nhl","dodgers","packers","browns","lakers","chiefs","cowboys","caleb williams","taylor swift","disney","pokemon","marvel","star wars","nike","adidas"];
+ if(risky.some(x=>s.includes(x))) return {pod:"review",why:"Likely brand/team/celebrity/IP issue. Treat as research only until rights/trademark review."};
+ const strong=["halloween","christmas","teacher","nurse","mom","dad","grandma","grandpa","dog","cat","golf","camp","fishing","birthday","graduation","wedding","retirement","faith"];
+ if(strong.some(x=>s.includes(x))) return {pod:"safe",why:"Potential POD fit. Validate Etsy demand, competition and final phrase trademark status."};
+ return {pod:"neutral",why:"Broad trend. Look for a durable buyer identity or event before making a shirt."};
+}
+
+function renderTrends(){
+ const filter=document.getElementById('trendFilter')?.value||'all';
+ const list=liveTrends.filter(x=>filter==='all'||(filter==='safe'&&x.pod==='safe')||(filter==='review'&&x.pod==='review'));
+ document.getElementById('trendGrid').innerHTML=list.map(x=>{
+   const badge=x.pod==='safe'?'<span class="badge green">POD candidate</span>':x.pod==='review'?'<span class="badge red">IP review</span>':'<span class="badge yellow">Research first</span>';
+   return `<div class="trend">${badge}<h4>${escapeHtml(x.title)}</h4><div class="meta">${escapeHtml(x.traffic||'Current trend')}</div><p>${escapeHtml(x.why||'')}</p></div>`;
+ }).join('');
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+async function refreshTrends(manual=false){
+ const status=document.getElementById('trendStatus');
+ status.textContent="Refreshing trend feed…";
+ const rss="https://trends.google.com/trending/rss?geo=US";
+ const attempts=[
+   async()=>{const r=await fetch(rss); if(!r.ok)throw new Error('direct'); return {type:'xml',data:await r.text(),label:'Google Trends RSS'}},
+   async()=>{const u="https://api.allorigins.win/raw?url="+encodeURIComponent(rss); const r=await fetch(u); if(!r.ok)throw new Error('proxy'); return {type:'xml',data:await r.text(),label:'Google Trends via browser proxy'}},
+   async()=>{const u="https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(rss); const r=await fetch(u); if(!r.ok)throw new Error('rss2json'); return {type:'json',data:await r.json(),label:'Google Trends via RSS bridge'}}
+ ];
+ for(const attempt of attempts){
+   try{
+     const res=await attempt();
+     let items=[];
+     if(res.type==='xml'){
+       const doc=new DOMParser().parseFromString(res.data,'text/xml');
+       items=[...doc.querySelectorAll('item')].slice(0,18).map(i=>{
+         const title=i.querySelector('title')?.textContent||'Untitled trend';
+         const traffic=i.getElementsByTagName('ht:approx_traffic')[0]?.textContent||i.querySelector('description')?.textContent?.replace(/<[^>]+>/g,'').slice(0,80)||'Trending now';
+         const c=classifyTrend(title); return {title,traffic,pod:c.pod,why:c.why};
+       });
+     }else{
+       items=(res.data.items||[]).slice(0,18).map(i=>{const c=classifyTrend(i.title||'');return {title:i.title,traffic:i.description?.replace(/<[^>]+>/g,'').slice(0,90)||'Trending now',pod:c.pod,why:c.why}});
+     }
+     if(items.length){
+       liveTrends=items; localStorage.setItem('podTrendCache',JSON.stringify({ts:Date.now(),items}));
+       const now=new Date(); status.textContent=`Live feed refreshed from ${res.label} • ${now.toLocaleString()}`;
+       document.getElementById('lastUpdatePill').textContent=`Last live refresh: ${now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+       renderTrends(); return;
+     }
+   }catch(e){}
+ }
+ const cached=JSON.parse(localStorage.getItem('podTrendCache')||'null');
+ if(cached?.items?.length){
+   liveTrends=cached.items;
+   status.textContent=`Live source blocked by browser; showing your saved live snapshot from ${new Date(cached.ts).toLocaleString()}.`;
+ }else{
+   liveTrends=[...fallbackTrends];
+   status.textContent="Live source is blocked in this browser, so the dashboard is showing the built-in research snapshot. Use the live-source buttons below to verify current marketplace data.";
+ }
+ renderTrends();
+}
+
+function renderSeasonalClock(){
+ const now=new Date(), m=now.getMonth()+1;
+ let items=[];
+ if(m>=8&&m<=10) items=[["Halloween","Make/list now","green"],["Thanksgiving/Fall","Make/list now","green"],["Christmas matching","Build immediately","green"],["New Year","Begin testing","yellow"]];
+ else if(m>=11||m===12) items=[["Christmas","Promote winners","green"],["New Year","List now","green"],["Valentine's","Build now","yellow"],["Spring/Easter","Research","yellow"]];
+ else if(m<=2) items=[["Valentine's","Promote now","green"],["St. Patrick's","List now","green"],["Easter","Build now","yellow"],["Mother's Day","Research/build","yellow"]];
+ else if(m<=5) items=[["Mother's Day","Promote","green"],["Father's Day","Build/list","green"],["Graduation","Build/list","green"],["Summer trips/reunions","Build","yellow"]];
+ else items=[["Summer trips","Promote","green"],["Back to school","Build/list","green"],["Halloween","Research/build","yellow"],["Christmas","Research","yellow"]];
+ document.getElementById('seasonalClock').innerHTML=items.map(x=>`<div class="list-item"><div style="flex:1"><b>${x[0]}</b><br><small>${x[1]}</small></div><span class="badge ${x[2]}">${x[1]}</span></div>`).join('');
+}
+
+const weekly=[
+"Check live Google Trends + Etsy/eRank signals",
+"Research at least 10 micro-niche keywords",
+"Trademark/IP-check every phrase before publishing",
+"Launch 3–5 new evidence-backed listings",
+"Review impressions → clicks → favorites → sales",
+"Create variants of any listing that converted",
+"Archive or rework listings with weak signals",
+"Plan the next seasonal window 6–10 weeks ahead"
+];
+function renderChecklist(){
+ const saved=JSON.parse(localStorage.getItem('podWeekly')||'[]');
+ document.getElementById('weeklyChecklist').innerHTML=weekly.map((x,i)=>`<label class="check"><input type="checkbox" ${saved.includes(i)?'checked':''} onchange="toggleWeek(${i},this.checked)"><span>${x}</span></label>`).join('');
+}
+function toggleWeek(i,on){
+ let s=JSON.parse(localStorage.getItem('podWeekly')||'[]'); s=on?[...new Set([...s,i])]:s.filter(x=>x!==i); localStorage.setItem('podWeekly',JSON.stringify(s));
+}
+function saveNotes(){localStorage.setItem('podNotes',document.getElementById('notes').value);document.getElementById('noteStatus').textContent='Saved locally.';setTimeout(()=>document.getElementById('noteStatus').textContent='',1500)}
+function calc(){
+ const n=id=>parseFloat(document.getElementById(id).value)||0;
+ const sell=n('sell'),fees=sell*(n('txn')+n('paypct'))/100+n('payfix')+n('listing');
+ const beforeAds=sell-n('prod')-n('ship')-fees-n('other');
+ const profit=beforeAds-n('ad'),margin=sell?profit/sell*100:0;
+ document.getElementById('profit').textContent='$'+profit.toFixed(2);
+ document.getElementById('margin').textContent=margin.toFixed(1)+'%';
+ document.getElementById('fees').textContent='$'+fees.toFixed(2);
+ document.getElementById('breakeven').textContent='$'+Math.max(0,beforeAds).toFixed(2);
+ document.getElementById('marginbar').style.width=Math.max(0,Math.min(100,margin))+'%';
+ document.getElementById('marginAdvice').innerHTML=margin>=30?'<span class="good"><b>Healthy test margin.</b></span> You have room for promotion and mistakes.':margin>=20?'<span class="warning"><b>Usable but tight.</b></span> Watch ads, discounts and shipping.':'<span class="danger"><b>Thin margin.</b></span> Revisit price, blank, fulfillment or ad spend.';
+}
+function init(){
+ renderPriority();renderOpportunities();renderSources();renderSeasonalClock();renderChecklist();calc();renderTrends();
+ document.getElementById('notes').value=localStorage.getItem('podNotes')||'';
+ const cache=JSON.parse(localStorage.getItem('podTrendCache')||'null');
+ if(cache?.items?.length && Date.now()-cache.ts<30*60*1000){liveTrends=cache.items;renderTrends();document.getElementById('trendStatus').textContent=`Showing cached live feed from ${new Date(cache.ts).toLocaleString()}. Auto-refreshes every 30 minutes.`}
+ else refreshTrends(false);
+ setInterval(()=>refreshTrends(false),30*60*1000);
+}
+init();
+</script>
+</body>
+</html>
